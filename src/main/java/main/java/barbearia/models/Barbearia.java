@@ -1,40 +1,72 @@
-package main.java.barbearia.models;
+package main.java.barbearia.Models;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import main.java.barbearia.Data.DAO.BarbeariaDao;
 
 public class Barbearia {
 
-    private int idClient;
-    private String nome, email, whatsApp, tipoCorte, profissional, dataHora;
+    private int idCliente;
+    private String nome, email, whatsapp, tipoCorte, profissional;
+    private LocalDateTime dataHora;
     private boolean ativo;
-    private ArrayList<Barbearia> barbearias;
 
-    public Barbearia( String nome, String email, String whatsApp,  String profissional) {
+    private static Barbearia instance = new Barbearia();
+
+    public static Barbearia getInstance(){
+        return instance;
+    }
+
+    public Barbearia(int idCliente, String nome, String email, String whatsApp,  String tipoCorte, String profissional, LocalDateTime dataHora, boolean ativo) {
+        this.idCliente = idCliente;
         this.nome = nome;
         this.email = email;
-        this.whatsApp = whatsApp;
+        this.whatsapp = whatsApp;
+        this.tipoCorte = tipoCorte;
         this.profissional = profissional;
-        this.barbearias = new ArrayList<>();
-    }
-    public Barbearia(){
-       // Construtor padrão 
+        this.dataHora = dataHora;
+        this.ativo = ativo;
     }
 
-    public Barbearia(String nome ) {
+    public Barbearia(int idCliente, String nome, String email, String whatsApp,  String tipoCorte, String profissional, LocalDateTime dataHora) {
+        this.idCliente = idCliente;
         this.nome = nome;
-        this.barbearias = new ArrayList<>();
+        this.email = email;
+        this.whatsapp = whatsApp;
+        this.tipoCorte = tipoCorte;
+        this.profissional = profissional;
+        this.dataHora = dataHora;
     }
 
-    
+    public Barbearia(String nome, String email, String whatsApp,  String tipoCorte, String profissional, LocalDateTime dataHora) {
+        this.nome = nome;
+        this.email = email;
+        this.whatsapp = whatsApp;
+        this.tipoCorte = tipoCorte;
+        this.profissional = profissional;
+        this.dataHora = dataHora;
+    }
 
-    public boolean cadastrarBarbearia(String nome, String email, String whatsApp, String profissional) {
+    public Barbearia(){}
+
+    public ArrayList<Barbearia> listarBarbearias() {
+        try {
+            BarbeariaDao daoBarbearia = new BarbeariaDao();
+            return daoBarbearia.listarBarbearias();
+        } catch (Exception e) {
+            System.out.println("Erro ao listar barbearias: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public boolean agendarCorte(String nome, String email, String whatsApp,  String tipoCorte, String profissional, LocalDateTime dataHora) {
+        System.out.println("Agendando corte...");
         try{
 
             BarbeariaDao daoBarbearia = new BarbeariaDao();
 
-            Barbearia barbearia = new Barbearia(nome, email, whatsApp, profissional);
+            Barbearia barbearia = new Barbearia(nome, email, whatsApp,tipoCorte, profissional, dataHora);
 
             daoBarbearia.addBarbearia(barbearia);
     
@@ -46,16 +78,71 @@ public class Barbearia {
         }
     }
 
-    public boolean agendarCorte(String nome, String email, String whatsApp, String tipoCorte, String profissional, String dataHora) {
-        return true;
+    public boolean alterarCorte(int idCliente, String nome, String email, String whatsApp,  String tipoCorte, String profissional, LocalDateTime dataHora) {
+        System.out.println("Alterando corte...");
+        try{
+
+            BarbeariaDao daoBarbearia = new BarbeariaDao();
+
+            Barbearia barbearia = new Barbearia(idCliente, nome, email, whatsApp,tipoCorte, profissional, dataHora);
+
+            daoBarbearia.editarBarbearia(barbearia);
+    
+            return true;
+
+        } catch (Exception e) {
+            System.out.println("Erro ao alterar barbearia: " + e.getMessage());
+            return false;
+        }
     }
 
-    public int getidCliente() {
-        return idClient;
+    public void cancelarCorte(int idCliente) {
+        try {
+            BarbeariaDao daoBarbearia = new BarbeariaDao();
+            
+            daoBarbearia.alterarStatusCorte(idCliente, false);
+        } catch (Exception e) {
+            System.out.println("Erro ao cancelar barbearia: " + e.getMessage());
+        }
     }
 
-    public void setidCliente(int idClient) {
-        this.idClient = idClient;
+    public void restaurarCorte(int idCliente) {
+        try {
+            BarbeariaDao daoBarbearia = new BarbeariaDao();
+            daoBarbearia.alterarStatusCorte(idCliente, true);
+        } catch (Exception e) {
+            System.out.println("Erro ao restaurar barbearia: " + e.getMessage());
+        }
+    }
+    public ArrayList<Barbearia> buscarCortePorNome(String nome) {
+        ArrayList<Barbearia> barbearias = new ArrayList<>();
+        try {
+            BarbeariaDao daoBarbearia = new BarbeariaDao();
+            barbearias = daoBarbearia.buscarCortePorNome(nome);
+            return barbearias;
+        } catch (Exception e) {
+            System.out.println("Erro ao restaurar barbearia: " + e.getMessage());
+            return null;
+        }
+    }
+    public  ArrayList<Barbearia> buscarCortePorProfissional(String profissional) {
+        ArrayList<Barbearia> barbearias = new ArrayList<>();
+        try {
+            BarbeariaDao daoBarbearia = new BarbeariaDao();
+            barbearias = daoBarbearia.buscarCortePorProfissional(nome);
+            return barbearias;
+        } catch (Exception e) {
+            System.out.println("Erro ao restaurar barbearia: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public int getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
     }
 
     public String getNome() {
@@ -74,12 +161,12 @@ public class Barbearia {
         this.email = email;
     }
 
-    public String getWhatsApp() {
-        return whatsApp;
+    public String getWhatsapp() {
+        return whatsapp;
     }
 
-    public void setWhatsApp(String whatsApp) {
-        this.whatsApp = whatsApp;
+    public void setWhatsapp(String whatsapp) {
+        this.whatsapp = whatsapp;
     }
 
     public String getTipoCorte() {
@@ -98,11 +185,11 @@ public class Barbearia {
         this.profissional = profissional;
     }
 
-    public String getDataHora() {
+    public LocalDateTime getDataHora() {
         return dataHora;
     }
 
-    public void setDataHora(String dataHora) {
+    public void setDataHora(LocalDateTime dataHora) {
         this.dataHora = dataHora;
     }
 
@@ -110,14 +197,19 @@ public class Barbearia {
         return ativo;
     }
 
+    public String getAtivo() {
+        System.out.println("Ativo: " + ativo);
+        return ativo ? "Sim" : "Não";
+    }
+
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
     }
 
     @Override
-    public String toString(){
-        String str = "\nNome: "+nome+"\nEmail: "+email+"\nWhatsApp: "+whatsApp+"\nTipo de Corte: "+tipoCorte+"\nProfissional: "+profissional+"\nData e Hora: "+dataHora;
-
-        return str;
+    public String toString() {
+        return "Barbearia [idCliente=" + idCliente + ", nome=" + nome + ", email=" + email + ", whatsapp=" + whatsapp
+                + ", tipoCorte=" + tipoCorte + ", profissional=" + profissional + ", dataHora=" + dataHora + ", ativo="
+                + ativo + "]";
     }
 }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="main.java.barbearia.Controllers.BarbeariaController" prefHeight="480.0" prefWidth="640.0">
+    <children>
+        <Label text="Cadastro de Barbearia" layoutX="20.0" layoutY="20.0"/>
+        
+        <Label text="Nome:" layoutX="20.0" layoutY="70.0"/>
+        <TextField fx:id="nomeBarbearia" layoutX="100.0" layoutY="70.0" prefWidth="500.0"/>
+        
+        <Label text="Email:" layoutX="20.0" layoutY="110.0"/>
+        <TextField fx:id="emailBarbearia" layoutX="100.0" layoutY="110.0" prefWidth="500.0"/>
+        
+        <Label text="WhatsApp:" layoutX="20.0" layoutY="150.0"/>
+        <TextField fx:id="whatsappBarbearia" layoutX="100.0" layoutY="150.0" prefWidth="500.0"/>
+        
+        <Label text="Tipo de Corte:" layoutX="20.0" layoutY="190.0"/>
+        <TextField fx:id="tipoCorteBarbearia" layoutX="100.0" layoutY="190.0" prefWidth="500.0"/>
+        
+        <Label text="Profissional:" layoutX="20.0" layoutY="230.0"/>
+        <TextField fx:id="profissionalBarbearia" layoutX="100.0" layoutY="230.0" prefWidth="500.0"/>
+
+        <Label text="Data:" layoutX="20.0" layoutY="270.0"/>
+        <DatePicker fx:id="dataBarbearia" layoutX="100.0" layoutY="270.0" prefWidth="200.0"/>
+
+        <Label text="Hora (HH:mm):" layoutX="320.0" layoutY="270.0"/>
+        <TextField fx:id="horaBarbearia" layoutX="450.0" layoutY="270.0" prefWidth="150.0" promptText="Ex: 14:30"/>
+        
+        <Button fx:id="btCadastrar" text="Cadastrar" layoutX="20.0" layoutY="320.0" onAction="#cadastrarBarbearia"/>
+        
+        <Button text="Voltar" layoutX="550.0" layoutY="320.0" onAction="#voltarTela"/>
+    </children>
+</AnchorPane>

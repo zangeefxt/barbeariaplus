@@ -4,67 +4,42 @@ import java.io.IOException;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.util.Callback;
-import main.java.barbearia.Data.DataConnection;
-import main.java.barbearia.Repository.Barbearia_Repositorio;
-import main.java.barbearia.controllers.HomeController;
+import main.java.barbearia.Controllers.JanelaBase;
 
-/**
- * JavaFX App
- */
 public class App extends Application {
 
-    private static Scene scene;
-
     @Override
-    public void start(Stage stage) throws IOException {
-        
-        DataConnection connection = new DataConnection();
-        connection.DataConnectionInit();
+    public void start(Stage stage) throws Exception {
 
-        Barbearia_Repositorio repo = new Barbearia_Repositorio();
+        Pane root = loadMainPane();
+        stage.setScene(new Scene(root, 640, 480));
 
-
-        Scene scene = new Scene(loadTela("home.fxml", o -> new HomeController(repo)), 640, 480);
-        stage.setScene(scene);
+        stage.setTitle("Barbearia...");
         stage.show();
-
+        stage.setResizable(false);
     }
 
-    public static Parent loadTela(String fxml, Callback controller){
-        Parent root = null;
-        try{
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(App.class.getResource(fxml));
-            loader.setControllerFactory(controller);
+    private Pane loadMainPane() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
 
-            root = loader.load();
-            
-        }catch (Exception e){
-            System.out.println("Problema no arquivo fxml. Está correto?? "+fxml);
-            e.printStackTrace();
-            System.exit(0);
-        }
-        return root;   
+        Pane mainPane = (Pane) loader.load(
+                App.class.getResourceAsStream(
+                        Navegador.JANELA_BASE
+                )
+        );
+
+        JanelaBase controller = loader.getController();
+
+        Navegador.setControlador(controller);
+        Navegador.loadJanela(Navegador.JANELA_HOME);
+
+        return mainPane;
     }
-
-
-    public static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
-    }
-
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/barbearia/views/" + fxml + ".fxml"));
-        return fxmlLoader.load();
-    }
-    
-
 
     public static void main(String[] args) {
         launch();
     }
-
 }

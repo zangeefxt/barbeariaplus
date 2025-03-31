@@ -1,19 +1,11 @@
-CREATE TABLE cortes (
-  idClient INT NOT NULL,
-  Nome VARCHAR(255) NOT NULL,
-  Email VARCHAR(255) NOT NULL,
-  WhatsApp VARCHAR(20),
-  TipoCorte VARCHAR(100),
-  DataHora DATETIME NOT NULL,
-  Ativo BOOLEAN NOT NULL,
-  PRIMARY KEY (idClient)
-);
-
-CREATE TABLE barbearia (
-  id INT AUTO_INCREMENT NOT NULL,
-  Nome VARCHAR(255) NOT NULL,
-  Email VARCHAR(255) NOT NULL,
-  WhatsApp VARCHAR(20),
-  Profissional VARCHAR(100),
-  PRIMARY KEY (id)
+CREATE TABLE BARBEARIA_barbearia (
+  idCliente INT AUTO_INCREMENT NOT NULL,
+  nome VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  whatsapp VARCHAR(20),
+  tipoCorte VARCHAR(100),
+  profissional VARCHAR(255),
+  dataHora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  ativo TINYINT(1),
+  PRIMARY KEY (idCliente)
 );
